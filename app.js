@@ -137,7 +137,7 @@ function render(){
     main.innerHTML = grid(ALL.filter(v => v.featured).sort((a,b) => a.featured - b.featured));
   } else if (id === 'contact'){
     const c = SITE.contact || {};
-    main.innerHTML = `<section class="contact">${HELLO_VIDEO}<h1>${esc(c.headline)}</h1><p>${esc(c.text).replace(/;-?\)/g, WINK)}</p>
+    main.innerHTML = `<section class="contact">${c.email ? `<a class="hello-link" href="mailto:${esc(c.email)}" title="Email me" aria-label="Email ${esc(c.email)}">${HELLO_VIDEO}</a>` : HELLO_VIDEO}<h1>${esc(c.headline)}</h1><p>${esc(c.text).replace(/;-?\)/g, WINK)}</p>
       ${c.email ? `<a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ''}
       <ul class="social">${(c.links || []).map(l => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener"${ICONS[l.name.toLowerCase()] ? ` class="icon" aria-label="${esc(l.name)}" title="${esc(l.name)}">${ICONS[l.name.toLowerCase()]}` : `>${esc(l.name)}`}</a></li>`).join('')}</ul></section>`;
   } else if (id === 'work'){
