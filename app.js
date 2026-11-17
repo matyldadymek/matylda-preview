@@ -100,6 +100,17 @@ function watchCentre(){
     { rootMargin: '-49% 0px -49% 0px' });   /* a thin band across the middle of the screen */
   main.querySelectorAll('.item').forEach(el => centreObs.observe(el));
 }
+/* at the very bottom of the page the last film can never reach the middle, so reveal it there */
+window.addEventListener('scroll', () => {
+  if (!touch.matches) return;
+  const items = main.querySelectorAll('.item'); if (!items.length) return;
+  const last = items[items.length - 1];
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+  const r = last.getBoundingClientRect();
+  if (atBottom && r.top < window.innerHeight && r.bottom > 0){
+    items.forEach(el => el.classList.toggle('on', el === last));
+  }
+}, { passive: true });
 function filters(id){
   return `<ul class="filters">` + CATS.map(c => [c.id, c.title])
     .map(([k,l]) => `<li><a href="#${k}"${k === id ? ' aria-current="page"' : ''}>${esc(l)}</a></li>`).join('') + `</ul>`;
@@ -121,17 +132,13 @@ const IG_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.
 /* ";)" in the contact text is drawn as a small wink face in the site's colours */
 const WINK = `<svg class="wink" viewBox="0 0 24 24" role="img" aria-label="wink"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8.6" cy="9.6" r="1.35" fill="currentColor"/><path d="M13.6 9.8q1.8-1.5 3.6 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.6 14.2q4.4 4 8.8 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 
-/* looping "hello" animation (After Effects) on the contact page: silent, plays inline on phones */
-const HELLO_VIDEO = `<video class="hello" autoplay muted loop playsinline preload="auto" poster="media/hello-poster.jpg" aria-label="Hello, cześć, hej, salut">
-  <source src="media/hello-loop.mp4" type="video/mp4"><source src="media/hello-loop.webm" type="video/webm"></video>`;
-/* safety net: some phones (iPhone Safari) don't always honour "loop" – restart it ourselves */
-function keepLooping(){
-  const v = main.querySelector('video.hello'); if (!v) return;
-  v.addEventListener('ended', () => { v.currentTime = 0; v.play().catch(() => {}); });
-  v.addEventListener('timeupdate', () => { if (v.duration && v.currentTime > v.duration - 0.08) { v.currentTime = 0; } });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && v.paused) v.play().catch(() => {}); });
-  v.play().catch(() => {});
-}
+/* looping "hello" animation (After Effects) on the contact page.
+   An animated image, not a video: phones always play and loop it, even in Low Power Mode.
+   People who switched off animations on their device see a still frame instead. */
+const HELLO_VIDEO = `<picture class="hello-pic">
+  <source media="(prefers-reduced-motion: reduce)" srcset="media/hello-poster.jpg">
+  <img class="hello" src="media/hello-loop.webp" width="540" height="960" alt="Hello, cześć, hej, salut"></picture>`;
+function keepLooping(){}
 
 /* ---- pages ---- */
 function render(){
