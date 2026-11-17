@@ -191,7 +191,11 @@ main.addEventListener('click', async e => {
     /* mature films: Vimeo won't play them inside other sites, so send viewers to Vimeo to confirm their age */
     const img = await thumbnail(v);
     screen.innerHTML = (img ? `<img src="${esc(img)}" alt="">` : '') +
-      (v.mature ? `<p class="notice">This film is for adult audiences.<br>Vimeo will ask you to confirm your age before it plays.</p>` : '');
+      (v.mature ? `<a class="notice" href="${esc(v.link)}" target="_blank" rel="noopener">
+         <span class="badge">18+</span>
+         <strong>${esc(v.mature_note || 'This film is for adult audiences')}</strong>
+         <span>Click through to watch on Vimeo, where you'll be asked to confirm you're 18 or over.</span>
+         <span class="go">Watch on Vimeo →</span></a>` : '');
     go.href = v.link; go.hidden = false;
     const ig = /instagram\.com/.test(v.link);
     go.innerHTML = v.mature || /vimeo\.com/.test(v.link) ? 'Watch on Vimeo'
