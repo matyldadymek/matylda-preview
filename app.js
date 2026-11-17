@@ -123,7 +123,15 @@ const WINK = `<svg class="wink" viewBox="0 0 24 24" role="img" aria-label="wink"
 
 /* looping "hello" animation (After Effects) on the contact page: silent, plays inline on phones */
 const HELLO_VIDEO = `<video class="hello" autoplay muted loop playsinline preload="auto" poster="media/hello-poster.jpg" aria-label="Hello, cześć, hej, salut">
-  <source src="media/hello-loop.webm" type="video/webm"><source src="media/hello-loop.mp4" type="video/mp4"></video>`;
+  <source src="media/hello-loop.mp4" type="video/mp4"><source src="media/hello-loop.webm" type="video/webm"></video>`;
+/* safety net: some phones (iPhone Safari) don't always honour "loop" – restart it ourselves */
+function keepLooping(){
+  const v = main.querySelector('video.hello'); if (!v) return;
+  v.addEventListener('ended', () => { v.currentTime = 0; v.play().catch(() => {}); });
+  v.addEventListener('timeupdate', () => { if (v.duration && v.currentTime > v.duration - 0.08) { v.currentTime = 0; } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && v.paused) v.play().catch(() => {}); });
+  v.play().catch(() => {});
+}
 
 /* ---- pages ---- */
 function render(){
@@ -140,6 +148,7 @@ function render(){
     main.innerHTML = `<section class="contact">${c.email ? `<a class="hello-link" href="mailto:${esc(c.email)}" title="Email me" aria-label="Email ${esc(c.email)}">${HELLO_VIDEO}</a>` : HELLO_VIDEO}<h1>${esc(c.headline)}</h1><p>${esc(c.text).replace(/;-?\)/g, WINK)}</p>
       ${c.email ? `<a class="email" href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : ''}
       <ul class="social">${(c.links || []).map(l => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener"${ICONS[l.name.toLowerCase()] ? ` class="icon" aria-label="${esc(l.name)}" title="${esc(l.name)}">${ICONS[l.name.toLowerCase()]}` : `>${esc(l.name)}`}</a></li>`).join('')}</ul></section>`;
+    keepLooping();
   } else if (id === 'work'){
     /* there is no "All" page any more: old links open the first section */
     location.replace('#' + CATS[0].id); return;
