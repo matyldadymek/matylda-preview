@@ -139,10 +139,10 @@ const WINK = `<svg class="wink" viewBox="0 0 24 24" role="img" aria-label="wink"
 const STILL = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DESKTOP = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const HELLO_VIDEO = STILL
-  ? `<img class="hello" src="media/hello-poster.jpg" width="540" height="960" alt="Hello, cześć, hej, salut">`
+  ? `<img class="hello" src="media/hello-poster-2.jpg" width="540" height="960" alt="Hello, cześć, hej, salut">`
   : DESKTOP
-  ? `<video class="hello" src="media/hello-loop.mp4" poster="media/hello-poster.jpg" width="540" height="960" autoplay muted loop playsinline disablepictureinpicture aria-label="Hello, cześć, hej, salut"></video>`
-  : `<img class="hello" src="media/hello-loop.webp" width="540" height="960" alt="Hello, cześć, hej, salut">`;
+  ? `<video class="hello" src="media/hello-loop-2.mp4" poster="media/hello-poster-2.jpg" width="540" height="960" autoplay muted loop playsinline disablepictureinpicture aria-label="Hello, cześć, hej, salut"></video>`
+  : `<img class="hello" src="media/hello-loop-2.webp" width="540" height="960" alt="Hello, cześć, hej, salut">`;
 function keepLooping(){
   const v = main.querySelector('video.hello'); if (!v) return;
   v.muted = true; const p = v.play(); if (p) p.catch(() => {});
