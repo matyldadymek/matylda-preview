@@ -75,7 +75,8 @@
   length: 3 min
   link: https://vimeo.com/71885791
   vimeo_only: true
-  image: https://i.vimeocdn.com/video/445582590-2a6e1d047a57a3511d6eb022d4441b0d59d267be470f1e8f3f4d8e65735958d0-d_1280
+  corner: bottom-left
+  image: images/cedric-et-maxime.jpg
 - title: Via Rupta
   tagline: Broken souls
   type: Fiction short
