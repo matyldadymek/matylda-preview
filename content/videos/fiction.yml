@@ -60,6 +60,12 @@
   type: Fiction short
   length: 15 min
   link: https://vimeo.com/85859530
+- title: Inside Out
+  type: Fiction short
+  length: 7 min
+  link: https://vimeo.com/45891722
+  vimeo_only: true
+  image: https://i.vimeocdn.com/video/319323448-c0eaf496b83430b5b5291c3f5376a4c3cd6ba85a84160f0f43028672c272da3d-d_1280
 - title: Via Rupta
   tagline: Broken souls
   type: Fiction short
